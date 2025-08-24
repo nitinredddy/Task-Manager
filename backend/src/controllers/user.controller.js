@@ -1,7 +1,7 @@
 import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/apiResponse.js";
-import { ApiResponse } from "../utils/apiError.js";
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 
 const generateRefreshAndAccessToken = async(userId)=>{
     try {
