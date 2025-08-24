@@ -12,4 +12,13 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use(express.json())
 
+
+
+import { userRouter } from './routes/user.routes.js'
+import { taskRouter } from './routes/task.routes.js'
+
+app.use("/api/v1/user",userRouter)
+app.use("/api/v1/task",taskRouter)
+
+
 export {app}
