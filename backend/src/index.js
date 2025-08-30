@@ -12,7 +12,7 @@ connectDB()
         console.log("some error occurred",err)
         throw err
     })
-    app.listen(process.env.PORT,()=>{
+    app.listen(process.env.PORT || 3000,()=>{
         console.log("Server listening on port",process.env.PORT)
     })
 }).catch((error)=>{
