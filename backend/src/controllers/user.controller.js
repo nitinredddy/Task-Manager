@@ -4,21 +4,20 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 
 const generateRefreshAndAccessToken = async(userId)=>{
-    try {
-        const user = await User.findById(userId);
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
-        user.refreshToken = refreshToken;
-        await user.save({validateBeforeSave:false})
+    const user = await User.findById(userId);
+    const accessToken = user.generateAccessToken()
+    const refreshToken = user.generateRefreshToken()
+    user.refreshToken = refreshToken;
+    await user.save({validateBeforeSave:false})
 
-        return {accessToken,refreshToken}
-    } catch (error) {
-        throw new ApiError(500,"Something went wrong while generating refresh and access token");
-    }
+    return {accessToken,refreshToken}
+
 }
 
 const register = asyncHandler(async(req,res)=>{
     const {name,email,password} = req.body
+
+    console.log(req.body)
 
     if(!email || !name || !password){
         throw new ApiError(400,"All the fields are required")
@@ -86,4 +85,27 @@ const login = asyncHandler(async(req,res)=>{
 
 })
 
-export {register,login}
+const getCurrentUser = asyncHandler(async(req,res)=>{
+    return res 
+    .status(200)
+    .json(new ApiResponse(200,req.user,"User fetched successfully"))
+})
+
+const logOut = asyncHandler(async(req,res)=>{
+    await User.findByIdAndUpdate(req.user._id, { $unset: { refreshToken: 1 } }, { new: true });
+
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", 
+        sameSite: "None"
+    });
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "None"
+    });
+
+    return res.status(200).json({ success: true, message: "User logged out successfully" });
+});
+
+export {register,login,getCurrentUser,logOut}

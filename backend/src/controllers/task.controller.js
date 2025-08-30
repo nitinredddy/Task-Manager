@@ -41,7 +41,7 @@ const update = asyncHandler(async(req,res)=>{
     if (title) task.title = title;
     if (description) task.description = description;
     if (status) {
-    const validStatuses = ["todo", "in-progress", "done"];
+    const validStatuses = ["to-do", "in-progress", "done"];
     if (!validStatuses.includes(status)) {
         throw new ApiError(400, "Invalid status value");
     }
