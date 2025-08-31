@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../Context/AuthContext.jsx";
+import { AuthContext } from "../Context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
