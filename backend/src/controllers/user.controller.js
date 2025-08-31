@@ -39,9 +39,9 @@ const register = asyncHandler(async(req,res)=>{
 
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
-    }
+        secure: true,
+        sameSite: "none"
+    };
 
     return res
     .status(200)
@@ -73,9 +73,9 @@ const login = asyncHandler(async(req,res)=>{
 
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
-    }
+        secure: true,
+        sameSite: "none"
+    };
 
     return res
     .status(200)
@@ -94,16 +94,14 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
 const logOut = asyncHandler(async(req,res)=>{
     await User.findByIdAndUpdate(req.user._id, { $unset: { refreshToken: 1 } }, { new: true });
 
-    res.clearCookie("accessToken", {
+    const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", 
-        sameSite: "None"
-    });
-    res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "None"
-    });
+        secure: true,
+        sameSite: "none"
+    };
+
+    res.clearCookie("accessToken",options);
+    res.clearCookie("refreshToken",options);
 
     return res.status(200).json({ success: true, message: "User logged out successfully" });
 });
