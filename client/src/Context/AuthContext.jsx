@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
   // Logout function
   const logout = async () => {
     try {
-      await api.post("/user/logout");
+      await api.get("/user/logout");
       dispatch({ type: "LOGOUT" });
     } catch {
       // handle error if needed
