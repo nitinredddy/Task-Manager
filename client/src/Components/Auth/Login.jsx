@@ -3,7 +3,7 @@ import { AuthContext } from "../../Context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { login, loading, error } = useContext(AuthContext);
+  const { loading, error } = useContext(AuthContext);
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
@@ -14,10 +14,26 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await login(form);
-    if(success){
-        navigate("/")
-        console.log("Logged in successfully")
+  
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // include cookies in request
+        body: JSON.stringify(form),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
+  
+      const data = await response.json();
+      console.log("Logged in successfully:", data);
+      navigate("/");
+    } catch (error) {
+      console.error("Login error:", error.message);
+      // Optionally show error to user here
     }
   };
 
