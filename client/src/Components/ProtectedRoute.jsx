@@ -6,6 +6,6 @@ export default function ProtectedRoute() {
   const { data, loading } = useContext(AuthContext);
 
   if (loading) return <div>Loading...</div>;
-  if (!data) return <Navigate to="/login" replace />;
+  if (!data) return <Navigate to="/register" replace />;
   return <Outlet />;
 }
