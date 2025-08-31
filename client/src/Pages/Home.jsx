@@ -27,8 +27,7 @@ export default function Home() {
 
   const handleLogout = async () => {
     try {
-      await api.get(`/user/logout`);
-      logout();
+      await logout();
       navigate("/login");
     } catch {
       alert("Logout failed, please try again.");
