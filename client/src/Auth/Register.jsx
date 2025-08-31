@@ -27,7 +27,7 @@ export default function Register() {
       return;
     }
   
-    try {
+
       const response = await fetch(`${import.meta.env.VITE_API_URL}/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,10 +46,6 @@ export default function Register() {
       setSuccessMessage(data.message || "Registration successful! Please login.");
       setForm({ name: "", email: "", password: "" });
       navigate("/")
-  
-    } catch (err) {
-      setError("Registration failed. Try again.");
-    }
   };
 
   return (
